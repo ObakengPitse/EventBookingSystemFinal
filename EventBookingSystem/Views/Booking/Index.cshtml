@@ -1,0 +1,56 @@
+﻿@model IEnumerable<EventBookingSystem.Models.Booking>
+
+<h1>Bookings</h1>
+
+<!-- Button to Create New Booking -->
+<a asp-action="Create" class="btn btn-primary mb-2">Add New Booking</a>
+
+<form asp-action="SearchBookings" method="get">
+    <div class="mb-2 mt-2">
+        <input type="text" class="form-control" style="width:200px;display:inline !important" name="searchQuery" placeholder="Search by Booking ID or Event Name or Venue" />
+        <button style="display:inline !important" type="submit" class="btn btn-success ms-2">Search</button>
+    </div>
+    
+</form>
+<!-- Booking List Table -->
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Booking ID</th>
+            <th>Customer Name</th>
+            <th>Event</th>
+			<th>Event Type</th>
+            <th>Venue</th>
+            <th>Booked On</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @if (Model != null && Model.Any())
+        {
+            foreach (var booking in Model)
+            {
+                <tr>
+                    <td>@booking.BookingId</td>
+                    <td>@booking.Customer.FullName</td>
+                    <td>@booking.Event.EventName</td>
+                    <td>@booking.Event.EventType.Name</td>
+                    <td>@booking.Venue.VenueName</td>
+                    <td>@booking.BookingDate.ToString("dd/MM/yyyy")</td>
+                    <td>
+                        <a href="@Url.Action("Edit", "Booking", new { id = booking.BookingId })" class="btn btn-primary">Edit</a>
+                        <a href="@Url.Action("Delete", "Booking", new { id = booking.BookingId })" class="btn btn-danger">Delete</a>
+                    </td>
+                </tr>
+            }
+        }
+		else
+		{
+			<tr>
+				<td colspan="6" class="text-center">No bookings found.</td>
+			</tr>
+		}
+        
+       
+    </tbody>
+</table>
